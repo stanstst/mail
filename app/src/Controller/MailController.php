@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Throwable;
 
 class MailController extends AbstractController
 {
@@ -16,7 +17,8 @@ class MailController extends AbstractController
      */
     private $emailCreator;
 
-    public function __construct(EmailCreator $emailCreator) {
+    public function __construct(EmailCreator $emailCreator)
+    {
 
         $this->emailCreator = $emailCreator;
     }
@@ -26,7 +28,15 @@ class MailController extends AbstractController
      */
     public function create(Request $request): Response
     {
-        $responseDto = $this->emailCreator->create($request->getContent());
+        try {
+            $responseDto = $this->emailCreator->create($request->getContent());
+        } catch (Throwable $e) {
+            return new JsonResponse(['error' => 'internal server error'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if (count($responseDto->errors)) {
+            return new JsonResponse($responseDto, Response::HTTP_BAD_REQUEST);
+        }
 
         return new JsonResponse($responseDto);
     }
