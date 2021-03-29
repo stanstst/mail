@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EmailRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=EmailRepository::class)
@@ -14,6 +15,8 @@ class Email
 {
     use Timestamps;
 
+    const STATUS_PENDING = 'pending';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -22,24 +25,31 @@ class Email
     private $id;
 
     /**
+     * @Assert\NotBlank
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $fromEmail;
 
     /**
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $fromName;
 
     /**
+     * @Assert\NotBlank
+     *
      * @ORM\Column(type="string", length=255)
      */
     private $subject;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @todo add  Custom validator
+     * @ORM\Column(type="array", length=255)
      */
-    private $recipients;
+    private $recipients = [];
 
     /**
      * @ORM\Column(type="text")
@@ -52,9 +62,11 @@ class Email
     private $htmlPart;
 
     /**
+     * @Assert\NotBlank
+     *
      * @ORM\Column(type="string", length=255)
      */
-    private $status;
+    private $status = self::STATUS_PENDING;
 
     public function getId(): ?int
     {
@@ -93,12 +105,12 @@ class Email
         $this->subject = $subject;
     }
 
-    public function getRecipients()
+    public function getRecipients(): array
     {
         return $this->recipients;
     }
 
-    public function setRecipients($recipients): void
+    public function setRecipients(array $recipients): void
     {
         $this->recipients = $recipients;
     }
