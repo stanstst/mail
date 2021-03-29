@@ -26,6 +26,7 @@ class Email
     private $id;
 
     /**
+     * @var string
      * @Assert\NotBlank
      *
      * @ORM\Column(type="string", length=255)
@@ -33,6 +34,7 @@ class Email
     private $fromEmail;
 
     /**
+     * @var string
      * @Assert\NotBlank()
      *
      * @ORM\Column(type="string", length=255)
@@ -40,6 +42,7 @@ class Email
     private $fromName;
 
     /**
+     * @var string
      * @Assert\NotBlank
      *
      * @ORM\Column(type="string", length=255)
@@ -47,14 +50,16 @@ class Email
     private $subject;
 
     /**
-     * @todo add  Custom validator
-     *
+     * @var array
      * @AppAssert\ConstraintsRecipients
+     *
      * @ORM\Column(type="array", length=255)
      */
     private $recipients = [];
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="text")
      */
     private $textPart;
@@ -65,6 +70,8 @@ class Email
     private $htmlPart;
 
     /**
+     * @var string
+     *
      * @Assert\NotBlank
      *
      * @ORM\Column(type="string", length=255)
@@ -76,7 +83,7 @@ class Email
         return $this->id;
     }
 
-    public function getFromName(): ?string
+    public function getFromName(): string
     {
         return $this->fromName;
     }
@@ -88,7 +95,7 @@ class Email
         return $this;
     }
 
-    public function getFromEmail()
+    public function getFromEmail(): string
     {
         return $this->fromEmail;
     }
@@ -98,7 +105,7 @@ class Email
         $this->fromEmail = $from;
     }
 
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -118,7 +125,7 @@ class Email
         $this->recipients = $recipients;
     }
 
-    public function getTextPart()
+    public function getTextPart(): string
     {
         return $this->textPart;
     }
@@ -128,7 +135,7 @@ class Email
         $this->textPart = $textPart;
     }
 
-    public function getHtmlPart()
+    public function getHtmlPart(): string
     {
         return $this->htmlPart;
     }
@@ -138,7 +145,7 @@ class Email
         $this->htmlPart = $htmlPart;
     }
 
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }

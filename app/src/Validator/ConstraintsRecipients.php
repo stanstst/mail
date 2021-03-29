@@ -9,5 +9,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class ConstraintsRecipients extends Constraint
 {
+    /**
+     * @var string
+     */
     public $message = 'Recipients must be array of objects';
 }
