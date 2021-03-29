@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EmailRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AppAssert;
 
 /**
  * @ORM\Entity(repositoryClass=EmailRepository::class)
@@ -47,6 +48,8 @@ class Email
 
     /**
      * @todo add  Custom validator
+     *
+     * @AppAssert\ConstraintsRecipients
      * @ORM\Column(type="array", length=255)
      */
     private $recipients = [];
