@@ -11,7 +11,7 @@ class MailResponseDto
 
     public $errors = [];
 
-    public function __construct(int $resourceId, array $errors)
+    public function __construct(?int $resourceId, array $errors)
     {
         $this->resourceId = $resourceId;
         $this->errors = $errors;

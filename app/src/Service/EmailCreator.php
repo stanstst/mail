@@ -4,7 +4,9 @@ namespace App\Service;
 
 use App\Dto\MailResponseDto;
 use App\Entity\Email;
+use App\Message\EmailCreatedMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -26,14 +28,21 @@ class EmailCreator
      */
     private $validator;
 
+    /**
+     * @var MessageBusInterface
+     */
+    private $messageBus;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        MessageBusInterface $messageBus
     ) {
         $this->entityManager = $entityManager;
         $this->serializer = $serializer;
         $this->validator = $validator;
+        $this->messageBus = $messageBus;
     }
 
     public function create(string $content): MailResponseDto
@@ -49,8 +58,12 @@ class EmailCreator
             $responseErrors[$error->getPropertyPath()] = $error->getMessage();
         }
 
-        $this->entityManager->persist($email);
-        $this->entityManager->flush();
+        if (count($responseErrors) === 0) {
+            $this->entityManager->persist($email);
+            $this->entityManager->flush();
+
+            $this->messageBus->dispatch(new EmailCreatedMessage($email->getId()));
+        }
 
         return new MailResponseDto($email->getId(), $responseErrors);
     }

@@ -29,3 +29,22 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Message\MailjetHandler:
+        tags:
+            -
+                name: messenger.message_handler
+                priority: 30
+
+    App\Message\SendgridHandler:
+        tags:
+            -
+                name: messenger.message_handler
+                priority: 20
+
+    App\Message\NotSentEmailHandler:
+        tags:
+            -
+                name: messenger.message_handler
+                priority: 10
+
