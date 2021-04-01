@@ -24,7 +24,7 @@ class CreateEmailCommand extends Command
     {
         $this->setDescription('Adds new email entry and expects json argument');
 
-        $this->setHelp('Example email data: "{ \"fromEmail\": \"stanstst@abv.bg\", \"fromName\": \"Stan Stefanov\", \"subject\": \"email subject\", \"recipients\": [ {\"Stanimir\": \"stan.r.stefanov@gmail.com\"}, {\"Stanimirrrr\": \"stannnn.r.stefanov@gmail.com\"} ], \"textPart\": \"Dear passenger, welcome to Mail\", \"htmlPart\": \"<h3>Dear passenger, welcome to Mail<h3>\" }"');
+        $this->setHelp('Example email data: "{ \"fromEmail\": \"stanstst@abv.bg\", \"fromName\": \"Stan Stefanov\", \"subject\": \"test subject\", \"recipients\": [ {\"email\": \"stan.r.stefanov@gmail.com\", \"name\": \"Stanimir\"} ], \"textPart\": \"Dear passenger, welcome to Mail\", \"htmlPart\": \"\" }"');
 
         $this->addArgument(self::EMAIL_DATA_ARGUMENT, InputArgument::REQUIRED, 'email data');
     }
@@ -40,8 +40,8 @@ class CreateEmailCommand extends Command
     {
         // @todo Validate json or implement another UI input
 
-        try {
             $resultDto = $this->emailCreator->create($input->getArgument(self::EMAIL_DATA_ARGUMENT));
+        try {
         } catch (Throwable $e) {
             $output->writeln(sprintf('Error creating en email entry: %s', $e->getMessage()));
 
