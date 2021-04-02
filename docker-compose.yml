@@ -1,7 +1,4 @@
-version: '3'
-
-networks:
-    nginx-php74-mysql8-node:
+version: '2.4'
 
 services:
 
@@ -17,8 +14,6 @@ services:
         depends_on:
             - php74-service
             - mysql8-service
-        networks:
-            - nginx-php74-mysql8-node
 
     # php
     php74-service:
@@ -30,8 +25,20 @@ services:
             - "9000:9000"
         volumes:
             - ./app:/var/www/project
-        networks:
-            - nginx-php74-mysql8-node
+
+    supervisor:
+        build:
+            context: .
+            dockerfile: ./php/Dockerfile
+        container_name: supervisor
+        volumes:
+            - ./app:/var/www/project
+            - ./php/conf/supervisord.conf:/etc/supervisor/supervisord.conf
+            - ./php/conf/supervisord-programs.conf:/etc/supervisor/conf.d/app.conf
+        command: ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+        depends_on:
+            rabbitmq:
+                condition: service_healthy
 
     # mysql
     mysql8-service:
@@ -45,15 +52,19 @@ services:
 #        restart: always # always restart unless stopped manually
         environment:
             MYSQL_ROOT_PASSWORD: secret
-        networks:
-            - nginx-php74-mysql8-node
+            MYSQL_DATABASE: mail
 
-    # node
-    node-service:
-        image: node:latest
-        container_name: node-container
-        volumes:
-            - ./app:/var/www/project
-        working_dir: /var/www/project
-        networks:
-            - nginx-php74-mysql8-node
+    rabbitmq:
+        build:
+            context: .
+            dockerfile: ./rabbitmq/Dockerfile
+        ports:
+            - "15672:15672"
+        environment:
+            RABBITMQ_DEFAULT_USER: symfony
+            RABBITMQ_DEFAULT_PASS: 12345
+        healthcheck:
+            test: [ "CMD", "curl", "-f", "http://localhost:15672" ]
+            interval: 10s
+            timeout: 5s
+            retries: 10
