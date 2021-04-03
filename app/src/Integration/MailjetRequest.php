@@ -3,8 +3,9 @@
 namespace App\Integration;
 
 use App\Entity\Email;
+use App\Message\SendRequestInterface;
 
-class MailjetRequest
+class MailjetRequest implements SendRequestInterface
 {
     /**
      * @var MailjetClient

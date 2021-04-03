@@ -2,17 +2,14 @@
 
 namespace App\Message;
 
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use App\Repository\EmailRepository;
+use Psr\Log\LoggerInterface;
 
-class SendgridHandler implements MessageHandlerInterface
+class SendgridHandler extends MailMessageHandler
 {
-    public function __invoke(EmailCreatedMessage $message)
+
+    public function __construct(EmailRepository $emailRepository, SendgridRequest $request, LoggerInterface $logger)
     {
-        if ($message->isHandled()) {
-
-            return;
-        }
-
-        $message->markAsHandled();
+        parent::__construct($emailRepository, $request, $logger);
     }
 }
