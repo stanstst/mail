@@ -40,8 +40,8 @@ class CreateEmailCommand extends Command
     {
         // @todo Validate json or implement another UI input
 
-            $resultDto = $this->emailCreator->create($input->getArgument(self::EMAIL_DATA_ARGUMENT));
         try {
+            $resultDto = $this->emailCreator->create($input->getArgument(self::EMAIL_DATA_ARGUMENT));
         } catch (Throwable $e) {
             $output->writeln(sprintf('Error creating en email entry: %s', $e->getMessage()));
 
