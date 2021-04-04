@@ -6,6 +6,7 @@
 parameters:
     app.mj.public: '%env(resolve:MJ_APIKEY_PUBLIC)%'
     app.mj.secret: '%env(resolve:MJ_APIKEY_SECRET)%'
+    app.sg.key: '%env(resolve:SG_API_KEY)%'
 
 services:
     # default configuration for services in *this* file

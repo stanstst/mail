@@ -2,6 +2,7 @@
 
 namespace App\Message;
 
+use App\Integration\SendgridRequest;
 use App\Repository\EmailRepository;
 use Psr\Log\LoggerInterface;
 

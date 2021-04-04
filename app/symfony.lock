@@ -237,6 +237,15 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
+    "sendgrid/php-http-client": {
+        "version": "3.14.0"
+    },
+    "sendgrid/sendgrid": {
+        "version": "7.9.2"
+    },
+    "starkbank/ecdsa": {
+        "version": "0.0.4"
+    },
     "symfony/amqp-messenger": {
         "version": "v5.2.4"
     },
